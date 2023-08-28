@@ -1,0 +1,19 @@
+{
+    "name": "HD Easy Reply",
+    "version": "0.0.0.1",
+    "manifest_version": 3,
+    "description": "Plug-in for simple preset copy/pasted messages",
+    "permissions": ["contextMenus", "activeTab", "clipboardWrite", "clipboardRead", "scripting", "tabs"],
+    "background":{
+        "service_worker": "quick_reply.js"
+    },
+    "icons": {
+        "48": "The_D.jpg"
+    },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["activeElement.js"],
+        "all_frames": true,
+        "match_about_blank": true
+      }]
+}
