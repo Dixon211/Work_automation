@@ -27,6 +27,13 @@ chrome.contextMenus.create({
     contexts: ["editable"]
 });
 
+chrome.contextMenus.create({
+    parentId: "quickReplyFunction", // ID of the parent menu item
+    id: "completedWork",
+    title: "Finished",
+    contexts: ["editable"]
+});
+
 //testing
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action = "testInfo") {
@@ -65,6 +72,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         chrome.tabs.sendMessage(tab.id, {
             actionType: "Reply",
             content: Greeting() + "Thank you for letting us know about this spam. We have blocked the domain ____. Please let us know if you need additional assistance.\n\n-Mike Dixon"
+        });
+    }
+    if (info.menuItemId === "completedWork") {
+        chrome.tabs.sendMessage(tab.id, {
+            actionType: "Reply",
+            content: Greeting() + "Thank you for speaking with me and giving me time to troubleshoot the issue. If you need additional assistance please give me a call at 301-941-1444 x717\n\n-Mike Dixon"
         });
     }
 });
