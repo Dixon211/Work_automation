@@ -4,6 +4,7 @@ import os
 from bs4 import BeautifulSoup as bs4
 import json
 
+
 #load secret variables
 load_dotenv()
 portal_uname = os.environ.get("portal_uname")
@@ -43,38 +44,70 @@ for div in client_divs:
 #use client Id's to get information from all U+C
 the_list ={}
 
+
 for client_id in client_ids:
+    list_of_employees = []
+    #error catching
     try:
+    #connecting
         temp = sesh.get(f'https://portal.shipshapeit.com/{client_id}/Users_and_Computers', cookies=cookies)
         if temp.status_code == 200:
             print(f"connected to {client_id}")
             soup = bs4(temp.content, "html.parser")
-            tbody = soup.find('tbody')
-            tr = tbody.find_all("tr")
-            for tr_single in tr:
-                tds = []
-                td = tr_single.find_all('td')
-                for td_element in td:
-                    td_txt = td_element.get_text()
-                    tds.append(td_txt)
+            table = soup.find("table", class_="table1 sortable")
+            tr_list = table.find_all("tr")
+
+            #walking the tree
+            for tr in tr_list:
+                tds = tr.find_all("td")
+
+
+                td_list = []
+                for td in tds:
+                    td_txt = td.get_text()
+                    td_list.append(td_txt)
+
+                #cleanup and formatting
                 imp_info = []
-                for x in tds:
-                    if x == "\xa0":
+                for x in td_list:
+                    if x =='\xa0':
                         pass
                     else:
-                        if len(imp_info) < 3:
+                        if len(imp_info) < 2:
                             imp_info.append(x)
                         else:
-                            if "@" in x:
+                            if '@' in x:
                                 imp_info.append(x)
                                 break
-                print(imp_info)
+                
+                bad_words = ['computer', 'Computer', 'laptop', "Laptop", 'machine', 'Machine']
+                list_formatted = {}
+                for i, x in enumerate(imp_info):
+                    if '\xa0' in x:
+                        imp_info[i] = x.replace('\xa0', '')
+                
+                for x in imp_info:
+                    if x in bad_words  or len(imp_info) < 3:
+                        break
+                    else:
+                        list_formatted['lname'] = imp_info[0]
+                        list_formatted['fname'] = imp_info[1]
+                        list_formatted['email'] = imp_info[2]
+
+                if list_formatted == {}:
+                    pass
+                else:    
+                    list_of_employees.append(list_formatted) 
+
+        #finally
+        the_list[client_id] = list_of_employees
+
+
+
                 
 
+
                 
-
-                        
-
             
 
     except requests.exceptions.RequestException as req_exc:
@@ -83,5 +116,7 @@ for client_id in client_ids:
         print("An error occurred", e)
 
 
+with open("./clients.json", "w") as json_file:
+    json.dump(the_list, json_file)
 
 sesh.close()

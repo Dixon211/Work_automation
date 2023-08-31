@@ -1,1 +1,4 @@
 ./database_creation/.env
+./clients.json
+database_creation/.env
+clients.json
