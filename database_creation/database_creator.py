@@ -41,6 +41,7 @@ for div in client_divs:
                better_value = attr_value.split("/")
                client_ids.append(better_value[0])
 
+print (client_ids)
 #use client Id's to get information from all U+C
 the_list ={}
 

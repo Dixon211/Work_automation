@@ -1,0 +1,19 @@
+{
+    "name": "Ticket Auto Fill",
+    "version": "0.0.0.1",
+    "manifest_version": 3,
+    "description": "Auto-fill SSIT ticket field",
+    "permissions": ["contextMenus", "activeTab", "clipboardWrite", "clipboardRead", "scripting", "tabs"],
+    "background":{
+        "service_worker": "autofillb.js"
+    },
+    "icons": {
+        "48": "The_D.jpg"
+    },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["autofillContent.js"],
+        "all_frames": true,
+        "match_about_blank": true
+      }]
+}

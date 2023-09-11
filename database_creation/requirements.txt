@@ -1,1 +1,4 @@
 requests
+dotenv
+os
+bs4
