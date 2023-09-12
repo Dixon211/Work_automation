@@ -42,15 +42,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 //functions
+//Need to move to activeElement.js
+// function Getname () {
+//     ticketname = document.getElementById("ticket_c_person_reporting")
+//     fname = ticketname.split("")[0];
+//     return fname;
+// }
+
 function Greeting() {
     var time = new Date();
     var hour = time.getHours();
+    //var name = Getname();
     if (hour<12) {
         return "Good Morning ,\n";
     } else if (hour>17) {
         return "Good Evening ,\n";
     } else {
-        return "Good Afternoon ,\n";
+        return "Good Afternoon,\n";
     }
 }
 

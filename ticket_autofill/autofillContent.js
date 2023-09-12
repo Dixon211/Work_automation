@@ -12,7 +12,7 @@ function handleClick(event) {
             console.log("sent the email info");
             console.log("Heres the response: ", JSON.stringify(response));
             output_data = response;
-            if (output_data && output_data != "I didn't get em") {
+            if (output_data && output_data != "no matches for this domain") {
                 editboxelements(output_data);
             }
         });
